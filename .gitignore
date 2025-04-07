@@ -15,6 +15,9 @@
 !/apps/email/index.html
 !/apps/email/**/*.mjs
 !/apps/email/neo-config.json
+!/apps/eventview/index.html
+!/apps/eventview/**/*.mjs
+!/apps/eventview/neo-config.json
 !/apps/finance/index.html
 !/apps/finance/**/*.mjs
 !/apps/finance/neo-config.json

@@ -1,0 +1,72 @@
+import Component from '../../../src/controller/Component.mjs';
+
+
+/**
+ * @class EventView.view.MainContainerController
+ * @extends Neo.controller.Component
+ */
+class MainContainerController extends Component {
+    static config = {
+        /**
+         * @member {String} className='EventView.view.MainContainerController'
+         * @protected
+         */
+        className: 'EventView.view.MainContainerController'
+    }
+
+    editButtonHandler (data) {
+        console.log(data);
+    }
+
+    onForumsClick (data) {
+        Neo.Main.redirectTo({
+            url : 'https://overlandtrailguides.com'
+        })
+    }
+
+    /**
+     * @param {Object} data
+     */
+    createDialog(data) {
+        let me        = this.component,
+            button    = data.component,
+            nextIndex = me.index + 1;
+
+        button.disabled = true;
+
+
+        if (!me.dialog) {
+            import('../EventDialog.mjs').then(module => {
+                me.dialog = Neo.create({
+                    module : module.default,
+                    appName: me.appName,
+                    boundaryContainerId: me.boundaryContainerId,
+                    index: nextIndex,
+                    listeners: { hide: this.onWindowHide, scope : this },
+                    modal: true, //me.app.mainView.down({valueLabelText: 'Modal'}).checked,
+                    trapFocus: true,
+                    closeAction: 'hide',
+                    animateTargetId: button.id,
+                    title: 'Event Create ',
+                    windowId: me.windowId,
+                    stateProvider: {parent: this.getStateProvider()}
+                })
+                console.log(me.dialog);
+            })
+        } else {
+            me.dialog.show()
+        }
+    }
+
+    /**
+     *
+     */
+    onWindowHide() {
+        let me = this;
+        me.getReference('create-dialog-button').disabled = false;
+        console.log("Main Window Close");
+    }
+
+}
+
+export default Neo.setupClass(MainContainerController);
