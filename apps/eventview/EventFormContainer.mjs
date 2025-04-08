@@ -6,8 +6,9 @@ import DateField from "../../src/form/field/Date.mjs";
 import {CheckBox} from "../../src/form/field/_export.mjs";
 
 
-import EventFormController  from './EventFormController.mjs';
+import EventFormController from './EventFormController.mjs';
 import ComboBox from "../../src/form/field/ComboBox.mjs";
+import Category from "./model/Category.mjs";
 
 /**
  * @class Event.EventFormContainer
@@ -33,139 +34,130 @@ class EventFormContainer extends BaseFormContainer {
          * @member {Object[]} items
          */
 
+        formGroup: 'event[0]',
+
         items: [
             {
-                module: TextField,
+                module   : TextField,
                 labelText: 'Event Name',
-               // name : 'name',
-                name : 'event[0].name',
+                // name : 'name',
+                name      : 'name',
                 labelWidth: 200,
-                reference: 'name-field'
+                reference : 'name-field'
             },
             {
-                module: DateField,
-                labelText: 'Start Date',
+                module     : DateField,
+                labelText  : 'Start Date',
                 placeholder: 'YYYY-MM-DD',
-                format: 'Y-m-d', // neo.mjs uses date-fns format,
-                name : 'event[0].start_time',
-                reference: 'start-time-field',
-                labelWidth: 200,
+                format     : 'Y-m-d', // neo.mjs uses date-fns format,
+                name       : 'start_time',
+                reference  : 'start-time-field',
+                labelWidth : 200,
             },
             {
-                module: TextField,
-                labelText: 'Location',
+                module    : TextField,
+                labelText : 'Location',
                 labelWidth: 200,
-                name : 'event[0].location',
-                reference: 'location-field'
+                name      : 'location',
+                reference : 'location-field'
             },
             //meetup_location
             {
-                module: TextField,
-                labelText: 'Meetup At',
+                module    : TextField,
+                labelText : 'Meetup At',
                 labelWidth: 200,
-                name : 'event[0].meetup_location',
-                reference: 'meetup-location-field'
+                name      : 'meetup_location',
+                reference : 'meetup-location-field'
             },
             {
-                module: TextField,
-                labelText: 'Recommended Vehicle',
-                name : 'event[0].recommended_vehicle',
-                reference: 'rec-field',
+                module    : TextField,
+                labelText : 'Recommended Vehicle',
+                name      : 'recommended_vehicle',
+                reference : 'rec-field',
                 labelWidth: 200,
-            },
-
-            {
-                module: NumberField,
-                labelText: 'Technical Rating',
-                name : 'event[0].technical_rating',
-                labelWidth: 200,
-                reference: 'technical-rating-field'
             },
 
             {
-                module        : ComboBox,
-                name : 'event[0].category_id',
-                labelText        : 'Category Type',
-                labelWidth : 200,
-                placeholder  : 'Select a category...',
-                valueField   : 'id',
-                displayField : 'name',
-                store        : [
-                    { id: '13',    name: 'Overlanding' },
-                    { id: '14',    name: 'Rock Crawling' },
-                    { id: '15',  name: 'Scenic Drive' },
-                    { id: '16',   name: 'Night Rin' }
-                ]
+                module    : NumberField,
+                labelText : 'Technical Rating',
+                name      : 'technical_rating',
+                labelWidth: 200,
+                reference : 'technical-rating-field'
             },
-            /*
+
             {
-                module: NumberField,
-                labelText: 'Category',
-                name : 'event[0].category_id',
-                labelWidth: 200,
-                reference: 'category-field'
-            },*/
+                module      : ComboBox,
+                name        : 'category_id',
+                labelText   : 'Category Type',
+                labelWidth  : 200,
+                placeholder : 'Select a category...',
+                valueField  : 'category_id',
+                displayField: 'name',
+                bind: {
+                    store: 'stores.categories'
+                }
+            },
             {
-                module: NumberField,
-                labelText: 'Max Rigs',
-                name : 'event[0].max_rigs',
+                module    : NumberField,
+                labelText : 'Max Rigs',
+                name      : 'max_rigs',
                 labelWidth: 200,
-                reference: 'max-rigs-field'
+                reference : 'max-rigs-field'
             },
             // waitlist_limit
             {
-                module: NumberField,
-                labelText: 'Waitlist Limit',
-                name : 'event[0].waitlist_limit',
+                module    : NumberField,
+                labelText : 'Waitlist Limit',
+                name      : 'waitlist_limit',
                 labelWidth: 200,
-                reference: 'waitlist-limit-field'
+                reference : 'waitlist-limit-field'
             },
             {
-                module: TextField,
+                module   : TextField,
                 labelText: 'Communications', labelWidth: 200,
-                name : 'event[0].communications',
+                name     : 'communications',
                 reference: 'comms-field'
             },
 
             {
-                module: TextField,
+                module   : TextField,
                 labelText: 'Permit Fees', labelWidth: 200,
-                name : 'event[0].permits_fees',
+                name     : 'permits_fees',
                 reference: 'fees-field'
             },
 
             // gpx_file_url
 
             {
-                module: TextField,
+                module   : TextField,
                 labelText: 'Route URL', labelWidth: 200,
-                name : 'event[0].gpx_file_url',
+                name     : 'gpx_file_url',
                 reference: 'url-field'
             },
 
             {
-                module: CheckBox,
-                labelText: 'Public',
-                name : 'event[0].is_public',
+                module    : CheckBox,
+                labelText : 'Public',
+                name      : 'is_public',
                 labelWidth: 200,
-                reference: 'public-field'
+                reference : 'public-field'
             },
             {
-                module: CheckBox,
-                labelText: 'Children',
-                name : 'event[0].children_permitted',
+                module    : CheckBox,
+                labelText : 'Children',
+                name      : 'children_permitted',
                 labelWidth: 200,
-                reference: 'children-field'
+                reference : 'children-field'
             },
             {
-                module: CheckBox,
-                labelText: 'Dogs',
-                name : 'event[0].dogs_permitted',
+                module    : CheckBox,
+                labelText : 'Dogs',
+                name      : 'dogs_permitted',
                 labelWidth: 200,
-                reference: 'dogs-field'
+                reference : 'dogs-field'
             },
             {
-                ntype: 'toolbar',
+                ntype : 'toolbar',
                 layout: {ntype: 'hbox', pack: 'end'},
 
                 itemDefaults: {
@@ -176,10 +168,10 @@ class EventFormContainer extends BaseFormContainer {
                 },
 
                 items: [{
-                    text: 'Cancel/Close',
-                    handler:'onCancelButtonClick'
+                    text   : 'Cancel/Close',
+                    handler: 'onCancelButtonClick'
                 }, {
-                    text: 'Save',
+                    text   : 'Save',
                     handler: 'onSaveButtonClick'
                 }]
             }

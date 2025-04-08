@@ -18,6 +18,8 @@ class Categories extends Store {
          */
         model: Category,
 
+        keyProperty : 'category_id',
+
         url : 'http://192.168.1.118/otgservices/getCategories.php',
 
         responseRoot : 'rows'

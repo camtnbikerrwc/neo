@@ -11,15 +11,15 @@ class Event extends Model {
          * @protected
          */
         className: 'EventView.model.Event',
+
         /**
          * @member {Object[]} fields
          */
         fields: [
             {
-                name: 'event_id',
+                name: 'id',
                 type: 'Int'
             },
-
             {
                 name: 'name',
                 type: 'String'
@@ -116,6 +116,12 @@ class Event extends Model {
                 name: 'dogs_permitted',
                 type : 'Boolean'
             },
+
+            {
+                name: 'joinfield',
+                type : 'Boolean'
+            },
+
 
 
 

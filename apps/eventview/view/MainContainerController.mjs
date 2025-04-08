@@ -14,14 +14,26 @@ class MainContainerController extends Component {
         className: 'EventView.view.MainContainerController'
     }
 
+
+    joinButtonHandler(data) {
+        console.log('Join' + data);
+    }
+
     editButtonHandler (data) {
-        console.log(data);
+        console.log('Edit handler' + data.component.record.id);
     }
 
     onForumsClick (data) {
         Neo.Main.redirectTo({
             url : 'https://overlandtrailguides.com'
         })
+    }
+
+    gpxrenderer({value}) {
+        if (!value) {
+            return '';
+        }
+        return '<a href="' + value + '" target="_blank">Link</a>';
     }
 
     /**
@@ -67,6 +79,10 @@ class MainContainerController extends Component {
         console.log("Main Window Close");
     }
 
+
+    onMyRowClick({view, record, rowIndex, event}) {
+        console.log('Selected Record:', record.id);
+    }
 
     /**
      * categoryRenderer

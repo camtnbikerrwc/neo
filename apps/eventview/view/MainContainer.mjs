@@ -1,9 +1,8 @@
-
-import MainContainerController    from './MainContainerController.mjs';
+import MainContainerController from './MainContainerController.mjs';
 import MainContainerStateProvider from './MainContainerStateProvider.mjs';
-import GridContainer               from '../../../src/grid/Container.mjs';
-import Viewport                   from '../../../src/container/Viewport.mjs';
-import Button                       from "../../../src/button/Base.mjs";
+import GridContainer from '../../../src/grid/Container.mjs';
+import Viewport from '../../../src/container/Viewport.mjs';
+import Button from "../../../src/button/Base.mjs";
 import Toolbar from "../../../src/toolbar/Base.mjs";
 import EventDialog from "../EventDialog.mjs";
 
@@ -28,7 +27,9 @@ class MainContainer extends Viewport {
 
         stateProvider: MainContainerStateProvider,
 
-        createEventButton : null,
+        createEventButton: null,
+
+
         /**
          * @member {Object[]} items
          */
@@ -37,103 +38,140 @@ class MainContainer extends Viewport {
         items: [
             {
                 module: Toolbar,
-                style : {
-                    marginBottom : '10px'
+                style: {
+                    marginBottom: '10px'
                 },
-                items : [
+                items: [
                     {
-                        text : 'Forums',
-                        handler : 'onForumsClick'
+                        text: 'Forums',
+                        handler: 'onForumsClick'
                     },
                     {
-                        text : 'Routes'
+                        text: 'Routes'
                     },
                     '->',
                     {
-                        module   : Button,
-                        handler  : 'createDialog',
-                        iconCls  : 'fa fa-window-maximize',
+                        module: Button,
+                        handler: 'createDialog',
+                        iconCls: 'fa fa-window-maximize',
                         reference: 'create-dialog-button',
-                        text     : 'Create Event',
+                        text: 'Create Event',
                     }
                 ],
-                flex : 'none'
+                flex: 'none'
             },
             {
                 module: GridContainer,
-                bind : {
-                    store : 'stores.eventStore'
+
+                listeners: {
+                    rowClick: 'onMyRowClick',
+                    cellClick: function(data) {
+                        // Check if the click was in the actions column
+                        console.log(data);
+                        let targetclasses = data.data.target.cls;
+                        if ( targetclasses[2] === 'delete-button') {
+                            console.log("Delete the record:  " + data.record.id);
+                        }
+                        else  if ( targetclasses[2] === 'edit-button') {
+                            console.log("Edit the record : " + data.record.id);
+                            if ( this.getController().component.dialog != null) {
+                                debugger;
+                                let dialog = this.getController().component.dialog;
+
+                                const form = dialog.getReference('main-form');
+
+                                const json = data.record.toJSON();
+
+                                form.setValues({ event:[json]});
+
+                                dialog.show();
+                            }
+                            else {
+                                console.log("Need to create the Dialog");
+                            }
+
+                        }
+                    }
                 },
-                columns : [
+                bind: {
+                    store: 'stores.eventStore'
+                },
+                columns: [
                     {
-                        dataField : 'name',
-                        text : 'Event',
-                        width : 250
+                        dataField: 'name',
+                        text: 'Event',
+                        width: 250
                     },
                     {
-                        dataField : 'start_time',
-                        text : 'Date',
-                        width : 100,
+                        dataField: 'start_time',
+                        text: 'Date',
+                        width: 100,
                     },
                     {
-                        dataField : 'user_name',
-                        text : 'Leader',
-                        width : 180,
-                        cellRenderer: (value) => {
+                        dataField: 'user_name',
+                        text: 'Leader',
+                        width: 180,
+                        renderer: (value) => {
                             return 'Ben Easley';
                         }
                     },
                     {
-                        dataField : 'count',
-                        text : 'Going',
-                        width : 75,
-                        cellRenderer: (value) => {
+                        dataField: 'count',
+                        text: 'Going',
+                        width: 75,
+                        renderer: (value) => {
                             return '5';
                         }
                     },
 
                     {
-                        dataField : 'technical_rating',
-                        text : 'Rating',
-                        width : 75
+                        dataField: 'technical_rating',
+                        text: 'Rating',
+                        width: 75
                     },
                     {
-                        dataField : 'max_rigs',
-                        text : 'Allowed',
-                        width : 75
+                        dataField: 'max_rigs',
+                        text: 'Allowed',
+                        width: 75
                     },
                     {
-                        dataField : 'waitlist_limit',
-                        text : 'Limit',
-                        width : 75
+                        dataField: 'waitlist_limit',
+                        text: 'Limit',
+                        width: 75
                     },
                     {
-                        dataField : 'gpx_file_url',
-                        text : 'Route URL',
-                        width : 200,
-                        listeners     : {click: (cell) => {
-                            console.log(cell);
-                            }},
-                    },
-
-                    {
-                        dataField : 'category_id',
-                        text : 'Category',
-                        width : 150,
-                     //   renderer : 'categoryRenderer',
-
-                        cellRenderer: (value) => {
-                           switch(value.value){
-                               case 13:
-                                   return 'Overlanding';
-                               case 14:
-                                   return 'Rock Crawling';
-                               case 15:
-                                   return 'Scenic Driv';
-                               case 16:
-                                   return 'Night Run';
-
+                        dataField: 'gpx_file_url',
+                        text: 'Route URL',
+                        width: 88,
+                       // renderer: 'gpxrenderer'
+                        renderer  ({value}) {
+                            if (!value) {
+                                return '';
                             }
+                            return '<a href="' + value + '" target="_blank">Route</a>';
+                        }
+                    },
+
+                    {
+                        dataField: 'category_id',
+                        text: 'Category',
+                        width: 150,
+                        //   renderer : 'categoryRenderer',
+
+                        renderer ({value}) {
+                            //var me = this;
+                            let categoryStore = this.getStateProvider().getStore('categories');
+                            let thecat = null;
+
+                            if (categoryStore) {
+                                thecat = categoryStore.get(value);
+                            }
+                            if ( thecat) {
+                                return thecat.name;
+                            }
+
+                            return "BAD CAT";
+
                         }
 
                     },
@@ -143,7 +181,7 @@ class MainContainer extends Viewport {
                         text: 'Public',
                         width: 80,
                         cellRenderer: (col) => {
-                            if ( col.value)
+                            if (col.value)
                                 return 'Public';
                             else
                                 return 'Private'
@@ -155,7 +193,7 @@ class MainContainer extends Viewport {
                         width: 80,
                         cellRenderer: (col) => {
 
-                            if ( col.value)
+                            if (col.value)
                                 return 'YES';
                             else
                                 return 'NO'
@@ -166,7 +204,7 @@ class MainContainer extends Viewport {
                         text: 'Dogs',
                         width: 80,
                         cellRenderer: (col) => {
-                            if ( col.value)
+                            if (col.value)
                                 return 'YES';
                             else
                                 return 'NO'
@@ -174,49 +212,77 @@ class MainContainer extends Viewport {
                     },
 
                     {
-                        dataField : 'recommended_vehicle',
-                        text : 'Recommended',
-                        width : 200
+                        dataField: 'recommended_vehicle',
+                        text: 'Recommended',
+                        width: 200
                     },
 
                     {
-                        dataField : 'communications',
-                        text : 'Comms',
-                        width : 200
+                        dataField: 'communications',
+                        text: 'Comms',
+                        width: 200
                     },
                     {
-                        dataField : 'meetup_location',
-                        text : 'Meet At',
-                        width : 200
+                        dataField: 'meetup_location',
+                        text: 'Meet At',
+                        width: 200
                     },
                     {
-                        dataField : 'meetup_time',
-                        text : 'Time',
-                        width : 150
+                        dataField: 'meetup_time',
+                        text: 'Time',
+                        width: 150
                     },
                     {
-                        dataField : 'permits_fees',
-                        text : 'Fees',
-                        width : 150
+                        dataField: 'permits_fees',
+                        text: 'Fees',
+                        width: 150
                     },
 
-                    {dataField: 'edit',           text: 'Action',
-                        width : 100,
+                    {
+                        text: 'More Actions',
+                        dataField: 'id',  // Usually reference the record ID
+                        renderer: function(value, record, columnIndex, rowIndex) {
+                            // Return HTML for action buttons
+                            return [
+                                '<div class="action-buttons">',
+                                '<i class="fa fa-edit edit-button" style="cursor:pointer; margin-right:10px;"></i>',
+                                '<i class="fa fa-trash delete-button" style="cursor:pointer;"></i>',
+                                '</div>'
+                            ].join('');
+                        },
+                        width: 100,
+                        align: 'center'
+                    },
+
+                    {
+                        dataField: 'joinfield', text: 'Action',
+                        width: 100,
                         component: {
-                            module : Button,
+                            module: Button,
+                            handler: 'joinButtonHandler',
+                            text: 'Join'
+                        }
+                    },
+                    {
+                        dataField: 'edit', text: 'Edit',
+                        width: 100,
+                        component: {
+                            module: Button,
                             handler: 'editButtonHandler',
-                            text   : 'Join'
-                        }}
+                            text: 'Edit'
+                        }
+                    }
                 ]
             }
+
 
         ],
 
         /*
          * @member {Object} layout={ntype:'fit'}
          */
-        layout: {ntype: 'vbox', align : 'stretch'},
-        style : {
+        layout: {ntype: 'vbox', align: 'stretch'},
+        style: {
             padding: '50px',
         }
     }

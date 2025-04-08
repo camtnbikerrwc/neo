@@ -21,7 +21,7 @@ class MainContainerStateProvider extends Provider {
          * @member {Object} stores
          */
         stores: {
-            categoriesStore: {
+            categories: {
                 module: Categories,
                 autoLoad: true,
               //  listeners: {load: 'onCategoryStoreLoad'},
