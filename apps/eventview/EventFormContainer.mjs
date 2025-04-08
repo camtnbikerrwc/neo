@@ -8,7 +8,6 @@ import {CheckBox} from "../../src/form/field/_export.mjs";
 
 import EventFormController from './EventFormController.mjs';
 import ComboBox from "../../src/form/field/ComboBox.mjs";
-import Category from "./model/Category.mjs";
 
 /**
  * @class Event.EventFormContainer
@@ -22,10 +21,10 @@ class EventFormContainer extends BaseFormContainer {
          */
         className: 'Event.EventFormContainer',
         /**
-         * @member {String[]} baseCls=['form-form-container','neo-container'],
+         * @member {String[]} cls=['form-form-container'],
          * @protected
          */
-        baseCls: ['form-form-container', 'neo-container'],
+        cls: ['form-form-container'],
         /**
          * @member {Neo.controller.Component} controller=FormContainerController
          */
@@ -48,7 +47,6 @@ class EventFormContainer extends BaseFormContainer {
             {
                 module     : DateField,
                 labelText  : 'Start Date',
-                placeholder: 'YYYY-MM-DD',
                 format     : 'Y-m-d', // neo.mjs uses date-fns format,
                 name       : 'start_time',
                 reference  : 'start-time-field',
