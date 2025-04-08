@@ -7,6 +7,7 @@ import {CheckBox} from "../../src/form/field/_export.mjs";
 
 
 import EventFormController  from './EventFormController.mjs';
+import ComboBox from "../../src/form/field/ComboBox.mjs";
 
 /**
  * @class Event.EventFormContainer
@@ -39,7 +40,6 @@ class EventFormContainer extends BaseFormContainer {
                // name : 'name',
                 name : 'event[0].name',
                 labelWidth: 200,
-                listeners: {change: 'up.onEventNameFieldChange'},
                 reference: 'name-field'
             },
             {
@@ -53,15 +53,17 @@ class EventFormContainer extends BaseFormContainer {
             },
             {
                 module: TextField,
-                labelText: 'Communications', labelWidth: 200,
-                name : 'event[0].communications',
-                reference: 'comms-field'
-            },
-            {
-                module: TextField,
-                labelText: 'Meetup Location',
+                labelText: 'Location',
                 labelWidth: 200,
                 name : 'event[0].location',
+                reference: 'location-field'
+            },
+            //meetup_location
+            {
+                module: TextField,
+                labelText: 'Meetup At',
+                labelWidth: 200,
+                name : 'event[0].meetup_location',
                 reference: 'meetup-location-field'
             },
             {
@@ -81,18 +83,64 @@ class EventFormContainer extends BaseFormContainer {
             },
 
             {
+                module        : ComboBox,
+                name : 'event[0].category_id',
+                labelText        : 'Category Type',
+                labelWidth : 200,
+                placeholder  : 'Select a category...',
+                valueField   : 'id',
+                displayField : 'name',
+                store        : [
+                    { id: '13',    name: 'Overlanding' },
+                    { id: '14',    name: 'Rock Crawling' },
+                    { id: '15',  name: 'Scenic Drive' },
+                    { id: '16',   name: 'Night Rin' }
+                ]
+            },
+            /*
+            {
                 module: NumberField,
                 labelText: 'Category',
                 name : 'event[0].category_id',
                 labelWidth: 200,
                 reference: 'category-field'
-            },
+            },*/
             {
                 module: NumberField,
                 labelText: 'Max Rigs',
                 name : 'event[0].max_rigs',
                 labelWidth: 200,
                 reference: 'max-rigs-field'
+            },
+            // waitlist_limit
+            {
+                module: NumberField,
+                labelText: 'Waitlist Limit',
+                name : 'event[0].waitlist_limit',
+                labelWidth: 200,
+                reference: 'waitlist-limit-field'
+            },
+            {
+                module: TextField,
+                labelText: 'Communications', labelWidth: 200,
+                name : 'event[0].communications',
+                reference: 'comms-field'
+            },
+
+            {
+                module: TextField,
+                labelText: 'Permit Fees', labelWidth: 200,
+                name : 'event[0].permits_fees',
+                reference: 'fees-field'
+            },
+
+            // gpx_file_url
+
+            {
+                module: TextField,
+                labelText: 'Route URL', labelWidth: 200,
+                name : 'event[0].gpx_file_url',
+                reference: 'url-field'
             },
 
             {
@@ -101,6 +149,20 @@ class EventFormContainer extends BaseFormContainer {
                 name : 'event[0].is_public',
                 labelWidth: 200,
                 reference: 'public-field'
+            },
+            {
+                module: CheckBox,
+                labelText: 'Children',
+                name : 'event[0].children_permitted',
+                labelWidth: 200,
+                reference: 'children-field'
+            },
+            {
+                module: CheckBox,
+                labelText: 'Dogs',
+                name : 'event[0].dogs_permitted',
+                labelWidth: 200,
+                reference: 'dogs-field'
             },
             {
                 ntype: 'toolbar',
@@ -115,9 +177,7 @@ class EventFormContainer extends BaseFormContainer {
 
                 items: [{
                     text: 'Cancel/Close',
-                    handler: function () {
-                        console.log("Cancel/Close the dialog");
-                    }
+                    handler:'onCancelButtonClick'
                 }, {
                     text: 'Save',
                     handler: 'onSaveButtonClick'

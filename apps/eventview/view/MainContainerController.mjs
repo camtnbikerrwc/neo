@@ -67,6 +67,27 @@ class MainContainerController extends Component {
         console.log("Main Window Close");
     }
 
+
+    /**
+     * categoryRenderer
+     */
+
+    categoryRenderer(value) {
+        var me = this;
+        let categoryStore = me.getStore('categoriesStore');
+        var thecat = null;
+
+        debugger;
+        if (categoryStore) {
+            categoryStore.findFirst('catgegorid_id', value).then(cat => {
+                console.log(cat);
+                thecat = cat;
+            })
+        }
+        if ( thecat) {
+            return thecat.name;
+        }
+    }
 }
 
 export default Neo.setupClass(MainContainerController);

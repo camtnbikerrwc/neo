@@ -1,5 +1,6 @@
 import Provider from '../../../src/state/Provider.mjs';
 import EventStore from "../store/Events.mjs";
+import Categories from "../store/Categories.mjs";
 
 /**
  * @class EventView.view.MainContainerStateProvider
@@ -20,12 +21,19 @@ class MainContainerStateProvider extends Provider {
          * @member {Object} stores
          */
         stores: {
-            eventStore : {
-                module : EventStore,
-                autoLoad : true
-            }
+            categoriesStore: {
+                module: Categories,
+                autoLoad: true,
+              //  listeners: {load: 'onCategoryStoreLoad'},
+            },
+            eventStore: {
+                module: EventStore,
+                autoLoad: true,
+
+            },
         }
     }
+
 }
 
 export default Neo.setupClass(MainContainerStateProvider);

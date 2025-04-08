@@ -27,7 +27,7 @@ class Event extends Model {
 
             {
                 name: 'start_time',
-                type: 'String'
+                type: 'DateField',
             },
             {
                 name : 'user_name',
@@ -55,6 +55,15 @@ class Event extends Model {
                 name: 'meetup_location',
                 type : 'String'
             },
+            {
+                name: 'gpx_file_url',
+                type : 'String'
+            },
+
+            {
+                name: 'meetup_time',
+                type : 'String'
+            },
 
             {
                 name: 'technical_rating',
@@ -62,6 +71,10 @@ class Event extends Model {
             },
             {
                 name: 'category_id',
+                type : 'Int'
+            },
+            {
+                name: 'waitlist_limit',
                 type : 'Int'
             },
 
@@ -79,6 +92,33 @@ class Event extends Model {
                 name: 'communications',
                 type : 'string'
             },
+            {
+                name: 'permits_fees',
+                type : 'string'
+            },
+
+            {
+                name: 'required_gear',
+                type : 'string'
+            },
+
+            {
+                name: 'required_gear',
+                type : 'string'
+            },
+
+            {
+                name: 'children_permitted',
+                type : 'Boolean'
+            },
+
+            {
+                name: 'dogs_permitted',
+                type : 'Boolean'
+            },
+
+
+
 
 
 

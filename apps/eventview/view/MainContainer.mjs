@@ -19,6 +19,8 @@ class MainContainer extends Viewport {
          * @protected
          */
         className: 'EventView.view.MainContainer',
+
+        cls: ['main-container'],
         /**
          * @member {Neo.controller.Component} controller=MainContainerController
          */
@@ -66,31 +68,17 @@ class MainContainer extends Viewport {
                     {
                         dataField : 'name',
                         text : 'Event',
-                        width : 200,
+                        width : 250
                     },
                     {
                         dataField : 'start_time',
                         text : 'Date',
                         width : 100,
-
-                        renderer: function (value) {
-                            if (!value) return '';
-
-                            const str = String(value.value);
-                            const date = new Date(str.replace(/\//g, '-')); // Ensure cross-browser safety
-
-                            const formatted = `${(date.getMonth() + 1).toString().padStart(2, '0')}/` +
-                                `${date.getDate().toString().padStart(2, '0')}/` +
-                                `${date.getFullYear()}`;
-
-
-                            return formatted;
-                        }
                     },
                     {
                         dataField : 'user_name',
                         text : 'Leader',
-                        width : 200,
+                        width : 180,
                         cellRenderer: (value) => {
                             return 'Ben Easley';
                         }
@@ -98,7 +86,7 @@ class MainContainer extends Viewport {
                     {
                         dataField : 'count',
                         text : 'Going',
-                        width : 100,
+                        width : 75,
                         cellRenderer: (value) => {
                             return '5';
                         }
@@ -107,18 +95,33 @@ class MainContainer extends Viewport {
                     {
                         dataField : 'technical_rating',
                         text : 'Rating',
-                        width : 100
+                        width : 75
                     },
                     {
                         dataField : 'max_rigs',
                         text : 'Allowed',
-                        width : 100
+                        width : 75
+                    },
+                    {
+                        dataField : 'waitlist_limit',
+                        text : 'Limit',
+                        width : 75
+                    },
+                    {
+                        dataField : 'gpx_file_url',
+                        text : 'Route URL',
+                        width : 200,
+                        listeners     : {click: (cell) => {
+                            console.log(cell);
+                            }},
                     },
 
                     {
                         dataField : 'category_id',
                         text : 'Category',
-                        width : 200,
+                        width : 150,
+                     //   renderer : 'categoryRenderer',
+
                         cellRenderer: (value) => {
                            switch(value.value){
                                case 13:
@@ -132,17 +135,41 @@ class MainContainer extends Viewport {
 
                             }
                         }
+
                     },
 
                     {
                         dataField: 'is_public',
                         text: 'Public',
-                        width: 100,
-                        cellRenderer: (value) => {
-                            if ( value)
+                        width: 80,
+                        cellRenderer: (col) => {
+                            if ( col.value)
                                 return 'Public';
                             else
                                 return 'Private'
+                        }
+                    },
+                    {
+                        dataField: 'children_permitted',
+                        text: 'Children',
+                        width: 80,
+                        cellRenderer: (col) => {
+
+                            if ( col.value)
+                                return 'YES';
+                            else
+                                return 'NO'
+                        }
+                    },
+                    {
+                        dataField: 'dogs_permitted',
+                        text: 'Dogs',
+                        width: 80,
+                        cellRenderer: (col) => {
+                            if ( col.value)
+                                return 'YES';
+                            else
+                                return 'NO'
                         }
                     },
 
@@ -157,13 +184,21 @@ class MainContainer extends Viewport {
                         text : 'Comms',
                         width : 200
                     },
-
                     {
                         dataField : 'meetup_location',
-                        text : 'Meetup',
+                        text : 'Meet At',
                         width : 200
                     },
-
+                    {
+                        dataField : 'meetup_time',
+                        text : 'Time',
+                        width : 150
+                    },
+                    {
+                        dataField : 'permits_fees',
+                        text : 'Fees',
+                        width : 150
+                    },
 
                     {dataField: 'edit',           text: 'Action',
                         width : 100,

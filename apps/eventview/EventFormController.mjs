@@ -1,7 +1,5 @@
 import Component from '../../src/controller/Component.mjs';
 
-import Toast from '../../src/component/Toast.mjs';
-
 /**
  * @class Form.view.FormContainerController
  * @extends Neo.controller.Component
@@ -23,7 +21,14 @@ class EventFormController extends Component {
 
     }
 
+    /**
+     * onCancelButtonClick
+     */
 
+    onCancelButtonClick(data) {
+        let me = this;
+        me.component.up('dialog').hide();
+    }
     /**
      * @param {Object} data
      */
@@ -56,11 +61,13 @@ class EventFormController extends Component {
                 console.log('✅ Success:', data);
                 me.component.up('dialog').hide();
 
+                form.reset();
 
                 setTimeout(() => {
                     console.log("Loading the Store");
                     me.getStore('eventStore').load();
                 }, 300);
+
 
 
             })
