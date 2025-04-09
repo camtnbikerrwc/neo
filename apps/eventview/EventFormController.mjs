@@ -31,15 +31,16 @@ class EventFormController extends Component {
         let me = this;
         me.component.up('dialog').hide();
     }
+
     /**
      * @param {Object} data
      */
     async onSaveButtonClick(buttonClick) {
 
-        let form       = this.getReference('main-form'), me = this,
+        let form = this.getReference('main-form'), me = this,
             formValues = await form.getSubmitValues();
 
-        let button  = me.getReference('saveButton');
+        let button = me.getReference('saveButton');
 
         let event = formValues.event[0];
 
@@ -48,50 +49,42 @@ class EventFormController extends Component {
         let eventStr = JSON.stringify(event);
 
 
-        fetch('http://192.168.1.118/otgservices/createEvent.php', {
-            method: 'POST',
+        const response = await fetch('http://192.168.1.118/otgservices/createEvent.php', {
+            method : 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Bearer YOUR_TOKEN' // if needed
             },
-            body: eventStr
-        })
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.json();
-            })
-            .then(data => {
-                console.log('✅ Success:', data);
-                me.component.up('dialog').hide();
+            body   : eventStr
+        });
 
-                form.reset();
-
-                setTimeout(() => {
-
-                    me.getStore('eventStore').load();
-
-                    Neo.toast({
-                        appName       : button.appName,
-                        title         : 'Success',
-                        msg           : 'Event Created successfully',
-                        position      : 'tr',
-                        slideDirection: 'left',
-                        windowId      : button.windowId
-                    })
-                }, 300);
-
-
-
-            })
-            .catch(error => {
-                console.error('❌ Error:', error);
+        if (!response.ok) {
+            Neo.toast({
+                appName       : button.appName,
+                title         : 'Error',
+                msg           : 'Events Store error',
+                position      : 'tr',
+                slideDirection: 'left',
+                windowId      : button.windowId
             });
+            return;
+        }
 
+        const data = await response.json();
         me.component.up('dialog').hide();
+        me.getStore('eventStore').load();
 
+        Neo.toast({
+            appName       : button.appName,
+            title         : 'Success',
+            msg           : 'Events Store updated successfully',
+            position      : 'tr',
+            slideDirection: 'left',
+            windowId      : button.windowId
+        });
 
-
-
+        await me.timeout(500);
+        form.reset();
 
     }
 

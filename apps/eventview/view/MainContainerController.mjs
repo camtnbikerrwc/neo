@@ -72,11 +72,11 @@ class MainContainerController extends Component {
                     trapFocus          : true,
                     closeAction        : 'hide',
                     animateTargetId    : button.id,
-                    title              : 'Event Create ',
+                    title              : 'Event Window ',
                     windowId           : me.windowId,
                     stateProvider      : {parent: this.getStateProvider()}
                 });
-            })
+            });
         } else {
             me.dialog.show()
         }

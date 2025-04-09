@@ -37,6 +37,12 @@ class EventFormContainer extends BaseFormContainer {
 
         items: [
             {
+                module    : NumberField,
+                name      : 'id',
+                hidden    : true,
+                reference : 'idfield'
+            },
+            {
                 module   : TextField,
                 labelText: 'Event Name',
                 // name : 'name',
