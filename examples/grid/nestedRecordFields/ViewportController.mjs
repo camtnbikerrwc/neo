@@ -1,4 +1,5 @@
 import Component from '../../../src/controller/Component.mjs';
+import Toast     from  '../../../src/component/Toast.mjs';
 
 /**
  * @class Neo.examples.grid.nestedRecordFields.ViewportController
@@ -21,11 +22,24 @@ class ViewportController extends Component {
     /**
      * @param {Object} data
      */
+    countryRenderer({gridContainer, record}) {
+        let countryStore = gridContainer.getStateProvider().getStore('countries');
+
+        if (countryStore.getCount() > 0) {
+            return countryStore.get(record.country).name
+        }
+
+        return ''
+    }
+
+    /**
+     * @param {Object} data
+     */
     editButtonHandler(data) {
         let me       = this,
+            {dialog} = me,
             button   = data.component,
-            {appName, dialog, theme, windowId} = me,
-            {record} = button;
+            {appName, record, theme, windowId} = button;
 
         if (!dialog) {
             import('./EditUserDialog.mjs').then(module => {
@@ -91,7 +105,7 @@ class ViewportController extends Component {
     onSwitchThemeButtonClick(data) {
         let me          = this,
             button      = data.component,
-            isDarkTheme = me.theme !== 'neo-theme-light',
+            isDarkTheme = button.theme !== 'neo-theme-light',
             theme       = isDarkTheme ? 'neo-theme-light' : 'neo-theme-dark';
 
         button.set({
@@ -99,11 +113,20 @@ class ViewportController extends Component {
             text   : isDarkTheme ? 'Dark Theme' : 'Light Theme'
         });
 
-        me.theme = theme;
+        me.component.theme = theme;
 
         if (me.dialog) {
             me.dialog.theme = theme
         }
+
+        Neo.toast({
+            appName       : button.appName,
+            title         : 'Switched Theme',
+            msg           : isDarkTheme ? 'Light Theme' : 'Dark Theme',
+            position      : 'tl',
+            slideDirection: 'left',
+            windowId      : button.windowId
+        })
     }
 }
 
