@@ -33,17 +33,15 @@ class MainContainer extends Viewport {
         /**
          * @member {Object[]} items
          */
-
-
         items: [
             {
                 module: Toolbar,
-                style: {
+                style : {
                     marginBottom: '10px'
                 },
-                items: [
+                items : [
                     {
-                        text: 'Forums',
+                        text   : 'Forums',
                         handler: 'onForumsClick'
                     },
                     {
@@ -51,100 +49,98 @@ class MainContainer extends Viewport {
                     },
                     '->',
                     {
-                        module: Button,
-                        handler: 'createDialog',
-                        iconCls: 'fa fa-window-maximize',
+                        module   : Button,
+                        handler  : 'createDialog',
+                        iconCls  : 'fa fa-window-maximize',
                         reference: 'create-dialog-button',
-                        text: 'Create Event',
+                        text     : 'Create Event',
                     }
                 ],
-                flex: 'none'
+                flex  : 'none'
             },
             {
                 module: GridContainer,
 
                 listeners: {
-                    rowClick: 'onMyRowClick',
-                    cellClick: function(data) {
-                        // Check if the click was in the actions column
-                        console.log(data);
+                    cellClick: function (data) {
+
+                        // We use the Target Classes to decide what to do.
                         let targetclasses = data.data.target.cls;
-                        if ( targetclasses[2] === 'delete-button') {
+                        if (targetclasses[2] === 'delete-button') {
+                            //TODO We need to work on a delete method.
                             console.log("Delete the record:  " + data.record.id);
-                        }
-                        else  if ( targetclasses[2] === 'edit-button') {
+                        } else if (targetclasses[2] === 'edit-button') {
                             console.log("Edit the record : " + data.record.id);
-                            if ( this.getController().component.dialog != null) {
-                                debugger;
-                                let dialog = this.getController().component.dialog;
-
-                                const form = dialog.getReference('main-form');
-
-                                const json = data.record.toJSON();
-
-                                form.setValues({ event:[json]});
-
-                                dialog.show();
-                            }
-                            else {
+                            let dialog = null;
+                            if (this.getController().component.dialog != null) {
+                                dialog = this.getController().component.dialog;
+                            } else {
                                 console.log("Need to create the Dialog");
+                                dialog = this.getController().createDialog(this.getController());
+                            }
+                            // if dialog was set we use it an load the data into it.
+                            if (dialog) {
+                                const form = dialog.getReference('main-form');
+                                const json = data.record.toJSON();
+                                form.setValues({event: [json]});
+                                dialog.show();
                             }
 
                         }
                     }
                 },
-                bind: {
+                bind     : {
                     store: 'stores.eventStore'
                 },
-                columns: [
+                columns  : [
                     {
                         dataField: 'name',
-                        text: 'Event',
-                        width: 250
+                        text     : 'Event',
+                        width    : 250
                     },
                     {
                         dataField: 'start_time',
-                        text: 'Date',
-                        width: 100,
+                        text     : 'Date',
+                        width    : 100,
                     },
                     {
                         dataField: 'user_name',
-                        text: 'Leader',
-                        width: 180,
-                        renderer: (value) => {
+                        text     : 'Leader',
+                        width    : 180,
+                        renderer : (value) => {
                             return 'Ben Easley';
                         }
                     },
                     {
                         dataField: 'count',
-                        text: 'Going',
-                        width: 75,
-                        renderer: (value) => {
+                        text     : 'Going',
+                        width    : 75,
+                        renderer : (value) => {
                             return '5';
                         }
                     },
 
                     {
                         dataField: 'technical_rating',
-                        text: 'Rating',
-                        width: 75
+                        text     : 'Rating',
+                        width    : 75
                     },
                     {
                         dataField: 'max_rigs',
-                        text: 'Allowed',
-                        width: 75
+                        text     : 'Allowed',
+                        width    : 75
                     },
                     {
                         dataField: 'waitlist_limit',
-                        text: 'Limit',
-                        width: 75
+                        text     : 'Limit',
+                        width    : 75
                     },
                     {
                         dataField: 'gpx_file_url',
-                        text: 'Route URL',
-                        width: 88,
-                       // renderer: 'gpxrenderer'
-                        renderer  ({value}) {
+                        text     : 'Route URL',
+                        width    : 88,
+                        // renderer: 'gpxrenderer'
+                        renderer({value}) {
                             if (!value) {
                                 return '';
                             }
@@ -154,11 +150,11 @@ class MainContainer extends Viewport {
 
                     {
                         dataField: 'category_id',
-                        text: 'Category',
-                        width: 150,
+                        text     : 'Category',
+                        width    : 150,
                         //   renderer : 'categoryRenderer',
 
-                        renderer ({value}) {
+                        renderer({value}) {
                             //var me = this;
                             let categoryStore = this.getStateProvider().getStore('categories');
                             let thecat = null;
@@ -166,20 +162,20 @@ class MainContainer extends Viewport {
                             if (categoryStore) {
                                 thecat = categoryStore.get(value);
                             }
-                            if ( thecat) {
+                            if (thecat) {
                                 return thecat.name;
                             }
 
-                            return "BAD CAT";
+                            return '';
 
                         }
 
                     },
 
                     {
-                        dataField: 'is_public',
-                        text: 'Public',
-                        width: 80,
+                        dataField   : 'is_public',
+                        text        : 'Public',
+                        width       : 80,
                         cellRenderer: (col) => {
                             if (col.value)
                                 return 'Public';
@@ -188,9 +184,9 @@ class MainContainer extends Viewport {
                         }
                     },
                     {
-                        dataField: 'children_permitted',
-                        text: 'Children',
-                        width: 80,
+                        dataField   : 'children_permitted',
+                        text        : 'Children',
+                        width       : 80,
                         cellRenderer: (col) => {
 
                             if (col.value)
@@ -200,9 +196,9 @@ class MainContainer extends Viewport {
                         }
                     },
                     {
-                        dataField: 'dogs_permitted',
-                        text: 'Dogs',
-                        width: 80,
+                        dataField   : 'dogs_permitted',
+                        text        : 'Dogs',
+                        width       : 80,
                         cellRenderer: (col) => {
                             if (col.value)
                                 return 'YES';
@@ -213,35 +209,35 @@ class MainContainer extends Viewport {
 
                     {
                         dataField: 'recommended_vehicle',
-                        text: 'Recommended',
-                        width: 200
+                        text     : 'Recommended',
+                        width    : 200
                     },
 
                     {
                         dataField: 'communications',
-                        text: 'Comms',
-                        width: 200
+                        text     : 'Comms',
+                        width    : 200
                     },
                     {
                         dataField: 'meetup_location',
-                        text: 'Meet At',
-                        width: 200
+                        text     : 'Meet At',
+                        width    : 200
                     },
                     {
                         dataField: 'meetup_time',
-                        text: 'Time',
-                        width: 150
+                        text     : 'Time',
+                        width    : 150
                     },
                     {
                         dataField: 'permits_fees',
-                        text: 'Fees',
-                        width: 150
+                        text     : 'Fees',
+                        width    : 150
                     },
 
                     {
-                        text: 'More Actions',
+                        text     : 'More Actions',
                         dataField: 'id',  // Usually reference the record ID
-                        renderer: function(value, record, columnIndex, rowIndex) {
+                        renderer : function (value, record, columnIndex, rowIndex) {
                             // Return HTML for action buttons
                             return [
                                 '<div class="action-buttons">',
@@ -250,31 +246,21 @@ class MainContainer extends Viewport {
                                 '</div>'
                             ].join('');
                         },
-                        width: 100,
-                        align: 'center'
+                        width    : 100,
+                        align    : 'center'
                     },
 
                     {
                         dataField: 'joinfield', text: 'Action',
-                        width: 100,
+                        width    : 100,
                         component: {
-                            module: Button,
+                            module : Button,
                             handler: 'joinButtonHandler',
-                            text: 'Join'
-                        }
-                    },
-                    {
-                        dataField: 'edit', text: 'Edit',
-                        width: 100,
-                        component: {
-                            module: Button,
-                            handler: 'editButtonHandler',
-                            text: 'Edit'
+                            text   : 'Join'
                         }
                     }
                 ]
             }
-
 
         ],
 
@@ -282,9 +268,26 @@ class MainContainer extends Viewport {
          * @member {Object} layout={ntype:'fit'}
          */
         layout: {ntype: 'vbox', align: 'stretch'},
-        style: {
+        style : {
             padding: '50px',
         }
+    }
+
+
+    /**
+     * Once it is rendered lets call out init
+     */
+    afterRender() {
+        super.afterRender();
+        this.init(); // Call out init Method below
+    }
+
+    /**
+     * We will create the Single Dialog for Edit and Create Event
+     */
+    init() {
+        let me = this;
+        me.getController().createDialogFromInit();
     }
 
 }

@@ -23,6 +23,8 @@ class EventDialog extends Dialog {
         width : 700,
 
         labelWidth : 200,
+
+        hidden: true,
         /**
          * @member {Object} containerConfig
          */
