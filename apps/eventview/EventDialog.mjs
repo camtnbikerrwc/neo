@@ -73,43 +73,6 @@ class EventDialog extends Dialog {
         ]
     }
 
-    /**
-     *
-     */
-    onWindowClose() {
-        this.dialog = null;
-        //this.getReference('create-dialog-button').disabled = false
-    }
-
-    /**
-     * Triggered after the record config got changed
-     * @param {Record|null} value
-     * @param {Record|null} oldValue
-     * @protected
-     */
-    async afterSetRecord(value, oldValue) {
-        if (value) {
-            let me = this,
-                {record} = me;
-
-            // ensure the store has its data
-            await me.timeout(20);
-
-            me.getItem('name-field').value = record['event.name'];
-
-        }
-    }
-
-    /**
-     * @param {Object} data
-     */
-    onEventNameFieldChange(data) {
-        // You can also access the internal setter directly:
-        // this.record['user.firstname'] = data.value
-        // Using the API allows bulk changes
-        //this.record.set({event: {name: data.value}})
-
-    }
 
 
 }

@@ -176,7 +176,7 @@ class MainContainer extends Viewport {
                         dataField   : 'is_public',
                         text        : 'Public',
                         width       : 80,
-                        cellRenderer: (col) => {
+                        renderer: (col) => {
                             if (col.value)
                                 return 'Public';
                             else
@@ -187,7 +187,7 @@ class MainContainer extends Viewport {
                         dataField   : 'children_permitted',
                         text        : 'Children',
                         width       : 80,
-                        cellRenderer: (col) => {
+                        renderer: (col) => {
 
                             if (col.value)
                                 return 'YES';
@@ -199,7 +199,7 @@ class MainContainer extends Viewport {
                         dataField   : 'dogs_permitted',
                         text        : 'Dogs',
                         width       : 80,
-                        cellRenderer: (col) => {
+                        renderer: (col) => {
                             if (col.value)
                                 return 'YES';
                             else

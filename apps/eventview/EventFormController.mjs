@@ -44,8 +44,6 @@ class EventFormController extends Component {
 
         let event = formValues.event[0];
 
-        console.log(event);
-
         let eventStr = JSON.stringify(event);
 
 
