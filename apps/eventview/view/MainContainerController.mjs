@@ -61,7 +61,6 @@ class MainContainerController extends Component {
 
         if (!me.dialog) {
             import('../EventDialog.mjs').then(module => {
-                console.log("Helo");
                 me.dialog = Neo.create({
                     module             : module.default,
                     appName            : me.appName,
@@ -96,7 +95,6 @@ class MainContainerController extends Component {
                 mainform.reset();
             }
         }
-        console.log("Main Window Close");
     }
 
     /**
