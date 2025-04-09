@@ -170,6 +170,7 @@ class EventFormContainer extends BaseFormContainer {
                     handler: 'onCancelButtonClick'
                 }, {
                     text   : 'Save',
+                    reference : 'saveButton',
                     handler: 'onSaveButtonClick'
                 }]
             }

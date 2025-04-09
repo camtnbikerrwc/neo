@@ -1,4 +1,6 @@
 import Component from '../../src/controller/Component.mjs';
+import Toast from '../../src/component/Toast.mjs'
+
 
 /**
  * @class Form.view.FormContainerController
@@ -32,11 +34,12 @@ class EventFormController extends Component {
     /**
      * @param {Object} data
      */
-    async onSaveButtonClick(data) {
+    async onSaveButtonClick(buttonClick) {
 
         let form       = this.getReference('main-form'), me = this,
             formValues = await form.getSubmitValues();
 
+        let button  = me.getReference('saveButton');
 
         let event = formValues.event[0];
 
@@ -64,8 +67,17 @@ class EventFormController extends Component {
                 form.reset();
 
                 setTimeout(() => {
-                    console.log("Loading the Store");
+
                     me.getStore('eventStore').load();
+
+                    Neo.toast({
+                        appName       : button.appName,
+                        title         : 'Success',
+                        msg           : 'Event Created successfully',
+                        position      : 'tr',
+                        slideDirection: 'left',
+                        windowId      : button.windowId
+                    })
                 }, 300);
 
 
